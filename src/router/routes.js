@@ -101,19 +101,22 @@ let systemRoutes = [
     }
 ]
 
-import MultilevelMenuExample from './modules/multilevel.menu.example'
-import BreadcrumbExample from './modules/breadcrumb.example'
-
+import comment from './modules/comment'
+import article from './modules/article'
+import analysis from './modules/analysis'
+import setting from './modules/setting'
 // 动态路由（异步路由、导航栏路由）
 let asyncRoutes = [
     {
         meta: {
-            title: '演示',
+            title: '动态路由',
             icon: 'sidebar-default'
         },
         children: [
-            MultilevelMenuExample,
-            BreadcrumbExample
+            analysis,
+            article,
+            comment,
+            setting
         ]
     }
 ]

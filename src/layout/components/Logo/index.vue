@@ -61,7 +61,7 @@ const to = computed(() => {
     span {
         display: block;
         font-weight: bold;
-        color: #fff;
+        color: #000;
         @include text-overflow;
     }
 }

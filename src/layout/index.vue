@@ -9,7 +9,6 @@ import AppSetting from './components/AppSetting/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useKeepAliveStore from '@/store/modules/keepAlive'
 import { useMainPage } from '@/utils/composables'
-
 const routeInfo = useRoute()
 
 const settingsStore = useSettingsStore()

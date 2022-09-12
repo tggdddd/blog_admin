@@ -28,9 +28,10 @@ const useUserStore = defineStore(
             login(data) {
                 return new Promise((resolve, reject) => {
                     // 通过 mock 进行登录
-                    api.post('member/login', data, {
-                        baseURL: '/mock/'
+                    api.post('admin/member/login', data, {
+                        // baseURL: '/mock/'
                     }).then(res => {
+                        console.log(res)
                         localStorage.setItem('account', res.data.account)
                         localStorage.setItem('token', res.data.token)
                         localStorage.setItem('failure_time', res.data.failure_time)

@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import qs from 'qs'
+import qs from 'qs'
 import router from '@/router/index'
 import { ElMessage } from 'element-plus'
 import useUserStore from '@/store/modules/user'
@@ -33,9 +33,9 @@ api.interceptors.request.use(
         }
         // 是否将 POST 请求参数进行字符串化处理
         if (request.method === 'post') {
-            // request.data = qs.stringify(request.data, {
-            //     arrayFormat: 'brackets'
-            // })
+            request.data = qs.stringify(request.data, {
+                arrayFormat: 'brackets'
+            })
         }
         return request
     }
@@ -49,9 +49,12 @@ api.interceptors.response.use(
          * 规则是当 code 为 200 时表示请求成功，为 999 时表示接口需要登录或者登录状态失效，需要重新登录
          * 请求出错时 msg 会返回错误信息
          */
-        if (response.data.code === 200) {
+        // console.log("拦截回显：",response.data.code===200)
+        // 返回的是字符串形式   ===会falsexx
+        if (response.data.code == 200 || response.data.code == 999) {
             // if (response.data.error === '') {
             // 请求成功并且没有报错
+            // console.log("拦截的返回为",response)
             return Promise.resolve(response.data)
             // } else {
             // 这里做错误提示

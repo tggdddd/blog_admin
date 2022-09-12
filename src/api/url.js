@@ -15,6 +15,11 @@ let apiUrl = {
     getComment: '/comment/pull',
     grade: '/grade/update',
     carousel: '/carousel/pull',
-    statistics: '/statistics'
+    statistics: '/statistics',
+    carouselDelete: '/carousel/delete',
+    carouselAdd: '/carousel/add',
+    carouselUpdate: '/carousel/update',
+    getCommentTotal: '/comment/pullTotal',
+    commentDelete: '/comment/delete'
 }
 export default apiUrl

@@ -19,23 +19,40 @@
                     <div>站内内容统计：</div>
                 </div>
                 <div>
-                    <div>999篇文章</div>
+                    <div>{{ statistics.articleTotal }}篇文章</div>
                 </div>
                 <div>
-                    <div>999次访问</div>
+                    <div>{{ statistics.visitTotal }}次访问</div>
                 </div>
                 <div>
-                    <div>999条评论</div>
+                    <div>{{ statistics.commentTotal }}条评论</div>
                 </div>
             </div>
         </page-main>
     </div>
 </template>
 
-<script>
-export default {
-
-}
+<script setup>
+import {
+    onMounted
+} from 'vue'
+import api from '@/api'
+import apiUrl from '../../api/url'
+import { ElMessage } from 'element-plus'
+const statistics = ref({
+    articleTotal: 0,
+    visitTotal: 0,
+    commentTotal: 0
+})
+onMounted(() => {
+    api.get(apiUrl.statistics).then(res => {
+        statistics.value.articleTotal = res.data.articleTotal
+        statistics.value.visitTotal = res.data.visitTotal
+        statistics.value.commentTotal = res.data.commentTotal
+    }).catch(error => {
+        ElMessage(error)
+    })
+})
 </script>
 
 <style scoped>
@@ -55,7 +72,7 @@ div {
 .banner h3 {
     vertical-align: middle;
     text-align: center;
-    color: #8a2be280;/* mix-blend-mode: overlay; */
+    color: #8a2be280;
 }
 .banner .el-button {
     display: block;

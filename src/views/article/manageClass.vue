@@ -36,7 +36,7 @@
         </el-table>
         <el-pagination style="justify-content: right;" background layout="sizes, prev, pager, next" :current-page="currentPage" :total="total" :page-size="pageSize" :page-sizes="[10, 20, 30, 40,50]" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
         <!-- 拟态框 -->
-        <el-dialog v-model.visible="dialogFormVisible" title="回复评论" draggable>
+        <el-dialog v-model.visible="dialogFormVisible" title="标签修改" draggable>
             <el-form :model="form">
                 <el-form-item label="标签">
                     <el-tag :color="form.color">{{ form.tag }}</el-tag>

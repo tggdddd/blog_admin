@@ -1,5 +1,5 @@
 <template>
-    <page-main>
+    <page-main v-loading="viewLoading">
         <div class="container">
             <!-- 结果显示 -->
             <div style="margin-top: 10px;" class="viewHtml">
@@ -16,8 +16,8 @@
         </div>
         <!-- 操作按钮 -->
         <div class="button">
-            <el-button type="success" @click="toPublic()">发布文章</el-button>
-            <el-button type="warning" @click="save()">保存草稿</el-button>
+            <el-button type="success" @click="toPublic()">确认修改</el-button>
+            <el-button v-if="false" type="warning" @click="save()">保存草稿</el-button>
         </div>
         <!-- 发布文章拟态框 -->
         <el-dialog v-model.visible="dialogFormVisible" title="请选择标签" draggable>
@@ -92,6 +92,7 @@ export default {
         Editor,
         Toolbar
     },
+    props: ['id'],
     data() {
         return {
             predefineColors: [
@@ -129,7 +130,8 @@ export default {
             tagForm: {
                 tag: '',
                 color: ''
-            }
+            },
+            viewLoading: false
         }
     },
     watch: {
@@ -139,7 +141,8 @@ export default {
         }
     },
     mounted() {
-
+        this.getTags()
+        this.getArticleDetail()
     },
     beforeUnmount() {
         const editor = this.editor
@@ -147,11 +150,33 @@ export default {
         editor.destroy() // 组件销毁时，及时销毁 editor ，重要！！！
     },
     methods: {
+        // 获得文章内容
+        getArticleDetail() {
+            this.viewLoading = true
+            api.get(apiUrl.articleDetail, { params: { id: this.id } }).then(response => {
+                this.html = response.data.content
+                this.form.title = response.data.title
+                this.form.author = response.data.author
+                this.form.tagsId = []
+                this.form.id = response.data.id
+                response.data.tags.forEach(data => {
+                    this.form.tagsId.push(data.id)
+                })
+                this.viewLoading = false
+            }).catch(error => {
+                this.viewLoading = false
+                ElMessage.error('获取文章详情失败!', error.msg)
+            })
+        },
         // 文章上传操作
         updateDate() {
             // 更新操作
-            api.post(apiUrl.addArticle, this.form).then(() => {
-                ElMessage.success('操作成功！')
+            api.post(apiUrl.updateArticle, this.form).then(data => {
+                if (data.data != 0)
+                    ElMessage.success('操作成功！')
+                else {
+                    ElMessage.success('操作失败！')
+                }
                 this.dialogFormVisible = false
             }).catch(error => {
                 ElMessage.error(error.msg)
@@ -182,7 +207,6 @@ export default {
             let res = this.tags.filter(data => {
                 return data.id == id
             })
-            console.log(res)
             return res[0]
         },
         onCreated(editor) {
@@ -196,7 +220,6 @@ export default {
             // 发布文章
             this.form.content = this.html
             this.dialogFormVisible = true
-            this.getTags()
         },
         // 保存草稿
         save() {
@@ -219,59 +242,59 @@ export default {
 }
 </script>
 
-<style scoped>
-/* stylelint-disable value-no-vendor-prefix */
-.button {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    right: 0;
-}
-.button .el-button {
-    float: right;
-    margin-right: 25px;
-}
-.inputArea {
-    flex: 1;
-    height: 100%;
-    overflow-y: scroll;
-}
-.container {
-    overflow: hidden;
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
-}
-.viewHtml {
-    flex: 1;
-    border: 10px double azure;
-    overflow: scroll;
-}
-.page-main {
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
-    position: absolute;
-}
-.editor {
-    height: 225px;
-}
-.el-tag {
-    color: #ffffffc2;
-}
-</style>
-<!-- editoer的css -->
-<style>
-* {
-    box-sizing: border-box;
-}
-div[role="application"] {
-    height: -webkit-fill-available !important;
-    width: -webkit-fill-availablee !important;
-}
-</style>
-<style src="@wangeditor/editor/dist/css/style.css"></style>
+  <style scoped>
+    /* stylelint-disable value-no-vendor-prefix */
+    .button {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        right: 0;
+    }
+    .button .el-button {
+        float: right;
+        margin-right: 25px;
+    }
+    .inputArea {
+        flex: 1;
+        height: 100%;
+        overflow-y: scroll;
+    }
+    .container {
+        overflow: hidden;
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        height: -webkit-fill-available;
+        width: -webkit-fill-available;
+    }
+    .viewHtml {
+        flex: 1;
+        border: 10px double azure;
+        overflow: scroll;
+    }
+    .page-main {
+        height: -webkit-fill-available;
+        width: -webkit-fill-available;
+        position: absolute;
+    }
+    .editor {
+        height: 225px;
+    }
+    .el-tag {
+        color: #ffffffc2;
+    }
+  </style>
+  <!-- editoer的css -->
+  <style>
+    * {
+        box-sizing: border-box;
+    }
+    div[role="application"] {
+        height: -webkit-fill-available !important;
+        width: -webkit-fill-availablee !important;
+    }
+  </style>
+  <style src="@wangeditor/editor/dist/css/style.css"></style>

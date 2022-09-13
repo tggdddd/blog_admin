@@ -98,6 +98,26 @@ let systemRoutes = [
                 }
             }
         ]
+    },
+    {
+        path: '/modify',
+        component: () => import('@/layout/index.vue'),
+        redirect: '/',
+        meta: {
+            title: '首页',
+            icon: 'ep:tickets'
+        },
+        children: [
+            {
+                path: 'article/:id',
+                component: () => import('@/views/article/modifyArticle.vue'),
+                props: true,
+                meta: {
+                    title: '修改文章',
+                    icon: 'ep:tickets'
+                }
+            }
+        ]
     }
 ]
 

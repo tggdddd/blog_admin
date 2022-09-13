@@ -90,7 +90,7 @@ export default {
     },
     computed: {
         filterTableData() {
-            return this.tableData.filter(data => !this.search.value || data.article.toLowerCase().includes(this.search.value.toLowerCase()))
+            return this.tableData
         }
     },
     mounted() {
@@ -117,7 +117,6 @@ export default {
         },
         // 回复按钮
         handleEdit(index, row) {
-            console.log(row)
             this.form.parentId = row.id
             this.articleId = row.articleId
             this.form.content = '@' + row.name + ' '

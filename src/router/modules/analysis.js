@@ -4,6 +4,7 @@ export default {
     path: '/analysis',
     component: Layout,
     name: 'analysis',
+    redirect: '/analysis/do',
     meta: {
         title: '主页',
         icon: 'ep:house'

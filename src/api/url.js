@@ -23,6 +23,10 @@ let apiUrl = {
     commentDelete: '/comment/delete',
     login: '/member/login',
     deleteTag: '/tag/delete',
-    updateTag: '/tag/update'
+    updateTag: '/tag/update',
+    addTag: '/tag/add',
+    addArticle: '/article/add',
+    deleteArticle: '/article/delete',
+    updateArticle: '/article/update'
 }
 export default apiUrl

@@ -20,6 +20,9 @@ let apiUrl = {
     carouselAdd: '/carousel/add',
     carouselUpdate: '/carousel/update',
     getCommentTotal: '/comment/pullTotal',
-    commentDelete: '/comment/delete'
+    commentDelete: '/comment/delete',
+    login: '/member/login',
+    deleteTag: '/tag/delete',
+    updateTag: '/tag/update'
 }
 export default apiUrl

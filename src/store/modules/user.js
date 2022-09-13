@@ -2,7 +2,7 @@ import api from '@/api'
 
 import useRouteStore from './route'
 import useMenuStore from './menu'
-
+import apiUrl from '@/api/url'
 const useUserStore = defineStore(
     // 唯一ID
     'user',
@@ -28,7 +28,7 @@ const useUserStore = defineStore(
             login(data) {
                 return new Promise((resolve, reject) => {
                     // 通过 mock 进行登录
-                    api.post('admin/member/login', data, {
+                    api.post(apiUrl.login, data, {
                         // baseURL: '/mock/'
                     }).then(res => {
                         console.log(res)

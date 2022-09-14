@@ -3,7 +3,8 @@ let apiUrl = {
     articleDetail: '/article/detail',
     articles: '/article/pull',
     articlesTotal: '/article/pull/sum',
-    searchArticlesByTitle: '/article/search/',
+    searchArticlesByTitle: '/article/search',
+    searchArticlesByTitleTotal: '/article/search/sum',
     hotTopic: '/article/getHotTopics',
     reply: '/reply',
     tags: '/tag/all',
@@ -27,6 +28,12 @@ let apiUrl = {
     addTag: '/tag/add',
     addArticle: '/article/add',
     deleteArticle: '/article/delete',
-    updateArticle: '/article/update'
+    updateArticle: '/article/update',
+    addDraft: '/draft/add',
+    deleteDraft: '/draft/delete',
+    drafts: '/draft/pull',
+    draftDetail: '/draft/detail',
+    updateDraft: '/draft/update'
+
 }
 export default apiUrl

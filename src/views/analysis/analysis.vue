@@ -14,18 +14,18 @@
             <el-button :size="large" color="#626aef" :dark="isDark">写文章</el-button>
         </page-main>
         <page-main style="background: rgb(242 243 245);">
-            <div>
+            <div v-loading="loading">
                 <div>
                     <div>站内内容统计：</div>
                 </div>
                 <div>
-                    <div>{{ statistics.articleTotal }}篇文章</div>
+                    <div>{{ articleTotal }}篇文章</div>
                 </div>
                 <div>
-                    <div>{{ statistics.visitTotal }}次访问</div>
+                    <div>{{ visitTotal }}次访问</div>
                 </div>
                 <div>
-                    <div>{{ statistics.commentTotal }}条评论</div>
+                    <div>{{ commentTotal }}条评论</div>
                 </div>
             </div>
         </page-main>
@@ -39,17 +39,19 @@ import {
 import api from '@/api'
 import apiUrl from '../../api/url'
 import { ElMessage } from 'element-plus'
-const statistics = ref({
-    articleTotal: 0,
-    visitTotal: 0,
-    commentTotal: 0
-})
+const articleTotal = ref(0)
+const visitTotal = ref(0)
+const commentTotal = ref(0)
+const loading = ref(true)
 onMounted(() => {
+    loading.value = true
     api.get(apiUrl.statistics).then(res => {
-        statistics.value.articleTotal = res.data.articleTotal
-        statistics.value.visitTotal = res.data.visitTotal
-        statistics.value.commentTotal = res.data.commentTotal
+        articleTotal.value = res.data.articleTotal
+        visitTotal.value = res.data.visitTotal
+        commentTotal.value = res.data.commentTotal
+        loading.value = false
     }).catch(error => {
+        loading.value = false
         ElMessage(error)
     })
 })

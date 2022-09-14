@@ -27,6 +27,14 @@ export default {
             }
         },
         {
+            path: 'draft',
+            name: 'draft',
+            component: () => import('@/views/article/draft.vue'),
+            meta: {
+                title: '草稿'
+            }
+        },
+        {
             path: 'class',
             name: 'class',
             component: () => import('@/views/article/manageClass.vue'),

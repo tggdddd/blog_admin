@@ -33,7 +33,9 @@ let apiUrl = {
     deleteDraft: '/draft/delete',
     drafts: '/draft/pull',
     draftDetail: '/draft/detail',
-    updateDraft: '/draft/update'
+    updateDraft: '/draft/update',
+    loginOut: '/member/loginOut',
+    editPassword: '/member/editPassword'
 
 }
 export default apiUrl

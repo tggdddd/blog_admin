@@ -11,6 +11,7 @@
 <script setup name="Login">
 import useSettingsStore from '@/store/modules/settings'
 import useUserStore from '@/store/modules/user'
+import { ElMessage } from 'element-plus'
 
 const route = useRoute(), router = useRouter()
 
@@ -51,7 +52,14 @@ function handleLogin() {
                     localStorage.removeItem('login_account')
                 }
                 router.push(redirect.value)
-            }).catch(() => {
+            }).catch(error => {
+                if (error.code == '100') {
+                    ElMessage.warning(error.msg)
+                } else if (error.code == '999') {
+                    ElMessage.info(error.msg)
+                } else {
+                    ElMessage.error(error.msg)
+                }
                 loading.value = false
             })
         }
@@ -147,11 +155,6 @@ function showPassword() {
     })
 }
 
-function testAccount(account) {
-    loginForm.value.account = account
-    loginForm.value.password = '123456'
-    handleLogin()
-}
 </script>
 
 <template>
@@ -193,10 +196,10 @@ function testAccount(account) {
                 </div>
                 <div class="flex-bar">
                     <el-checkbox v-model="loginForm.remember">记住我</el-checkbox>
-                    <el-link type="primary" :underline="false" @click="formType = 'reset'">忘记密码了?</el-link>
+                    <!-- <el-link type="primary" :underline="false" @click="formType = 'reset'">忘记密码了?</el-link> -->
                 </div>
                 <el-button :loading="loading" type="primary" size="large" style="width: 100%;" @click.prevent="handleLogin">登录</el-button>
-                <div class="sub-link">
+                <!-- <div class="sub-link">
                     <span class="text">还没有帐号?</span>
                     <el-link type="primary" :underline="false" @click="formType = 'register'">创建新帐号</el-link>
                 </div>
@@ -204,7 +207,7 @@ function testAccount(account) {
                     <el-divider>演示账号一键登录</el-divider>
                     <el-button type="primary" size="small" plain @click="testAccount('admin')">admin</el-button>
                     <el-button size="small" plain @click="testAccount('test')">test</el-button>
-                </div>
+                </div> -->
             </el-form>
             <el-form v-show="formType == 'register'" ref="registerFormRef" :model="registerForm" :rules="registerRules" class="login-form" auto-complete="on">
                 <div class="title-container">

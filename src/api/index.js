@@ -51,18 +51,18 @@ api.interceptors.response.use(
          */
         // console.log("拦截回显：",response.data.code===200)
         // 返回的是字符串形式   ===会falsexx
-        if (response.data.code == 200 || response.data.code == 999) {
+        if (response.data.code == '000' || response.data.code == '321') {
             // if (response.data.error === '') {
             // 请求成功并且没有报错
             // console.log("拦截的返回为",response)
-            return Promise.resolve(response.data)
+            toLogin()
             // } else {
             // 这里做错误提示
             // ElMessage.error(options)
             // return Promise.reject(response.data)
             // }
         } else {
-            toLogin()
+            return Promise.resolve(response.data)
         }
     },
     error => {

@@ -31,13 +31,18 @@ const useUserStore = defineStore(
                     api.post(apiUrl.login, data, {
                         // baseURL: '/mock/'
                     }).then(res => {
-                        console.log(res)
-                        localStorage.setItem('account', res.data.account)
-                        localStorage.setItem('token', res.data.token)
-                        localStorage.setItem('failure_time', res.data.failure_time)
-                        this.account = res.data.account
-                        this.token = res.data.token
-                        this.failure_time = res.data.failure_time
+                        if (res.code == '200') {
+                            localStorage.setItem('account', res.data.account)
+                            localStorage.setItem('token', res.data.token)
+                            localStorage.setItem('failure_time', res.data.failure_time)
+                            this.account = res.data.account
+                            this.token = res.data.token
+                            this.failure_time = res.data.failure_time
+                        } else {
+                            // ElMessage.error(error.msg)
+                            reject(res)
+                            return
+                        }
                         resolve()
                     }).catch(error => {
                         reject(error)
@@ -75,16 +80,18 @@ const useUserStore = defineStore(
                 })
             },
             editPassword(data) {
-                return new Promise(resolve => {
-                    api.post('member/edit/password', {
+                return new Promise((resolve, reject) => {
+                    api.post(apiUrl.editPassword, {
                         account: this.account,
                         password: data.password,
                         newpassword: data.newpassword
-                    }, {
-                        baseURL: '/mock/'
-                    }).then(() => {
-                        resolve()
-                    })
+                    }).then(response => {
+                        resolve(response)
+                    }).catch(
+                        error => {
+                            reject(error)
+                        }
+                    )
                 })
             }
         }

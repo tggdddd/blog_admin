@@ -24,7 +24,7 @@
             <template #default>
                 <el-form :model="form">
                     <el-form-item label="标题">
-                        <el-input v-model="form.title" maxlength="20" autocomplete="off" />
+                        <el-input v-model="form.title" maxlength="200" autocomplete="off" />
                     </el-form-item>
                     <el-form-item label="作者">
                         <el-input v-model="form.author" maxlength="20" type="email" autocomplete="off" />

@@ -1,5 +1,13 @@
+<route>
+    {
+        meta: {
+            enabled: false
+        }
+    }
+    </route>
+
 <template>
-    <page-main>
+    <page-main v-loading="loading">
         <div class="container">
             <!-- 结果显示 -->
             <div style="margin-top: 10px;" class="viewHtml">
@@ -76,6 +84,24 @@
                 <el-button type="primary" @click="updateTagDate">发 送</el-button>
             </template>
         </el-dialog>
+
+        <!-- 保存草稿拟态框 -->
+        <el-dialog v-model.visible="dialogVisible" title="请确定标题" draggable>
+            <template #default>
+                <el-form :model="form">
+                    <el-form-item label="标题">
+                        <el-input v-model="form.title" maxlength="20" autocomplete="off" />
+                    </el-form-item>
+                    <el-form-item label="作者">
+                        <el-input v-model="form.author" maxlength="20" type="email" autocomplete="off" />
+                    </el-form-item>
+                </el-form>
+            </template>
+            <template #footer>
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveConfirm">保 存</el-button>
+            </template>
+        </el-dialog>
     </page-main>
 </template>
 
@@ -94,6 +120,8 @@ export default {
     },
     data() {
         return {
+            dialogVisible: false,
+            loading: false,
             predefineColors: [
                 '#409EFF',
                 '#67C23A',
@@ -119,6 +147,7 @@ export default {
                 MENU_CONF: {}
             },
             form: {
+                id: '-1',
                 title: '',
                 content: '',
                 author: '',
@@ -139,7 +168,24 @@ export default {
         }
     },
     mounted() {
-
+        if (this.$route.query.id != undefined) {
+            this.loading = true
+            api.get(apiUrl.draftDetail, {
+                params: {
+                    id: this.$route.query.id
+                }
+            }).then(response => {
+                this.html = response.data.content
+                this.form.title = response.data.title
+                this.form.author = response.data.author
+                this.form.id = response.data.id
+                this.loading = false
+            }).catch(error => {
+                this.loading = false
+                ElMessage.error('草稿获取失败', error.msg)
+                this.Tagsloading = false
+            })
+        }
     },
     beforeUnmount() {
         const editor = this.editor
@@ -182,7 +228,6 @@ export default {
             let res = this.tags.filter(data => {
                 return data.id == id
             })
-            console.log(res)
             return res[0]
         },
         onCreated(editor) {
@@ -198,11 +243,28 @@ export default {
             this.dialogFormVisible = true
             this.getTags()
         },
-        // 保存草稿
+        // 保存草稿按钮
         save() {
-            const editor = this.editor
-            if (editor == null) return
-            editor.disable()
+            this.form.content = this.html
+            this.dialogVisible = true
+        },
+        // 确定保存草稿
+        saveConfirm() {
+            this.dialogVisible = false
+            this.loading = true
+            let url = apiUrl.addDraft
+            this.date = null
+            if (this.$route.query.id != undefined) {
+                url = apiUrl.updateDraft
+            }
+            api.post(url, this.form).then(response => {
+                this.tags = response.data
+                this.loading = false
+                ElMessage.success('保存成功')
+            }).catch(() => {
+                ElMessage.error('保存失败')
+                this.loading = false
+            })
         },
         // 获取所有标签
         getTags() {

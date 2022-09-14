@@ -55,7 +55,7 @@ export default {
             form: {
                 id: '1',
                 title: '这是一个标题',
-                content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
+                content: '',
                 author: '作者',
                 avatar: 'https://cravatar.cn/avatar/5ddb574b3352a3d58166f2d102fb6fcc?s=24&d=mm&r=g',
                 date: '2022-11-12'
@@ -70,12 +70,12 @@ export default {
     methods: {
         // 编辑操作
         handleEdit(index, row) {
-            router.push({ path: '/modify/article/' + row.id })
+            router.push({ path: '/article/add', query: { id: row.id } })
         },
         // 查看操作
         handleView(index, row) {
-            this.dialogFormVisible = true
             this.viewLoading = true
+            this.dialogFormVisible = true
             api.get(apiUrl.draftDetail, { params: { id: row.id } }).then(response => {
                 this.form = response.data
                 this.viewLoading = false

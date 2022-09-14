@@ -21,7 +21,7 @@
             <el-table-column label="阅读" prop="browse" />
             <el-table-column label="评分" prop="grade">
                 <template #default="scope">
-                    <div>次数：{{ scope.row.grade }}</div>
+                    <div>{{ isNaN(scope.row.grade.cGrade/scope.row.grade.count)?0:(scope.row.grade.cGrade/scope.row.grade.count) }}</div>
                 </template>
             </el-table-column>
             <el-table-column align="right">

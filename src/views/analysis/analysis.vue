@@ -11,7 +11,7 @@
         <page-main class="banner">
             <h1>脚踏实地，笃志前行</h1>
             <h3>尊敬的管理员，欢迎来到博客后台管理系统</h3>
-            <el-button :size="large" color="#626aef" :dark="isDark">写文章</el-button>
+            <el-button :size="large" color="#626aef" :dark="isDark" @click="goToEdit">写文章</el-button>
         </page-main>
         <page-main style="background: rgb(242 243 245);">
             <div v-loading="loading">
@@ -38,7 +38,7 @@ import {
 } from 'vue'
 import api from '@/api'
 import apiUrl from '../../api/url'
-import { ElMessage } from 'element-plus'
+import router from '@/router'
 const articleTotal = ref(0)
 const visitTotal = ref(0)
 const commentTotal = ref(0)
@@ -50,11 +50,13 @@ onMounted(() => {
         visitTotal.value = res.data.visitTotal
         commentTotal.value = res.data.commentTotal
         loading.value = false
-    }).catch(error => {
+    }).catch(() => {
         loading.value = false
-        ElMessage(error)
     })
 })
+function goToEdit() {
+    router.push({ path: '/article/add' })
+}
 </script>
 
 <style scoped>

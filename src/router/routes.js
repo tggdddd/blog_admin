@@ -125,6 +125,7 @@ import comment from './modules/comment'
 import article from './modules/article'
 import analysis from './modules/analysis'
 import setting from './modules/setting'
+import theme from './modules/theme'
 // 动态路由（异步路由、导航栏路由）
 let asyncRoutes = [
     {
@@ -136,6 +137,7 @@ let asyncRoutes = [
             analysis,
             article,
             comment,
+            theme,
             setting
         ]
     }

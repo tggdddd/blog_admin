@@ -32,7 +32,7 @@
             <template #default>
                 <el-form :model="form">
                     <el-form-item label="标题">
-                        <el-input v-model="form.title" maxlength="20" autocomplete="off" />
+                        <el-input v-model="form.title" maxlength="200" autocomplete="off" />
                     </el-form-item>
                     <el-form-item label="作者">
                         <el-input v-model="form.author" maxlength="20" type="email" autocomplete="off" />
@@ -196,8 +196,11 @@ export default {
         // 文章上传操作
         updateDate() {
             // 更新操作
-            api.post(apiUrl.addArticle, this.form).then(() => {
+            api.post(apiUrl.addArticle, this.form).then(res => {
                 ElMessage.success('操作成功！')
+                if (res.code == '200') {
+                    this.form = {}
+                }
                 this.dialogFormVisible = false
             }).catch(error => {
                 ElMessage.error(error.msg)

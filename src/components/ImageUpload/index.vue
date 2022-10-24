@@ -1,12 +1,19 @@
 <script setup name="ImageUpload">
+import apiUrl from '@/api/url'
+import useUserStore from '@/store/modules/user'
 const props = defineProps({
     action: {
         type: String,
-        required: true
+        required: true,
+        default: import.meta.env.VITE_APP_API_BASEURL + apiUrl.uploadImage
     },
     headers: {
         type: Object,
-        default: () => {}
+        default: () => {
+            return {
+                Token: useUserStore().token
+            }
+        }
     },
     data: {
         type: Object,
@@ -74,7 +81,7 @@ function beforeUpload(file) {
     const isTypeOk = props.ext.indexOf(fileExt) >= 0
     const isSizeOk = file.size / 1024 / 1024 < props.size
     if (!isTypeOk) {
-        ElMessage.error(`上传图片只支持 ${ props.ext.join(' / ') } 格式！`)
+        ElMessage.error(`上传图片只支持 ${props.ext.join(' / ')} 格式！`)
     }
     if (!isSizeOk) {
         ElMessage.error(`上传图片大小不能超过 ${props.size}MB！`)
@@ -108,9 +115,17 @@ function onSuccess(res) {
             drag
             class="image-upload"
         >
-            <el-image v-if="url === ''" :src="url === '' ? placeholder : url" :style="`width:${width}px;height:${height}px;`" fit="fill">
+            <el-image
+                v-if="url === ''"
+                :src="url === '' ? placeholder : url"
+                :style="`width:${width}px;height:${height}px;`"
+                fit="fill"
+            >
                 <template #error>
-                    <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
+                    <div
+                        class="image-slot"
+                        :style="`width:${width}px;height:${height}px;`"
+                    >
                         <el-icon>
                             <svg-icon name="ep:plus" />
                         </el-icon>
@@ -118,7 +133,11 @@ function onSuccess(res) {
                 </template>
             </el-image>
             <div v-else class="image">
-                <el-image :src="url" :style="`width:${width}px;height:${height}px;`" fit="fill" />
+                <el-image
+                    :src="url"
+                    :style="`width:${width}px;height:${height}px;`"
+                    fit="fill"
+                />
                 <div class="mask">
                     <div class="actions">
                         <span title="预览" @click.stop="preview">
@@ -134,17 +153,40 @@ function onSuccess(res) {
                     </div>
                 </div>
             </div>
-            <div v-show="url === '' && uploadData.progress.percent" class="progress" :style="`width:${width}px;height:${height}px;`">
-                <el-image :src="uploadData.progress.preview" :style="`width:${width}px;height:${height}px;`" fit="fill" />
-                <el-progress type="circle" :width="Math.min(width, height) * 0.8" :percentage="uploadData.progress.percent" />
+            <div
+                v-show="url === '' && uploadData.progress.percent"
+                class="progress"
+                :style="`width:${width}px;height:${height}px;`"
+            >
+                <el-image
+                    :src="uploadData.progress.preview"
+                    :style="`width:${width}px;height:${height}px;`"
+                    fit="fill"
+                />
+                <el-progress
+                    type="circle"
+                    :width="Math.min(width, height) * 0.8"
+                    :percentage="uploadData.progress.percent"
+                />
             </div>
         </el-upload>
         <div v-if="!notip" class="el-upload__tip">
             <div style="display: inline-block;">
-                <el-alert :title="`上传图片支持 ${ ext.join(' / ') } 格式，且图片大小不超过 ${ size }MB，建议图片尺寸为 ${width}*${height}`" type="info" show-icon :closable="false" />
+                <el-alert
+                    :title="`上传图片支持 ${ext.join(
+                        ' / '
+                    )} 格式，且图片大小不超过 ${size}MB，建议图片尺寸为 ${width}*${height}`"
+                    type="info"
+                    show-icon
+                    :closable="false"
+                />
             </div>
         </div>
-        <el-image-viewer v-if="uploadData.imageViewerVisible" :url-list="[url]" @close="previewClose" />
+        <el-image-viewer
+            v-if="uploadData.imageViewerVisible"
+            :url-list="[url]"
+            @close="previewClose"
+        />
     </div>
 </template>
 

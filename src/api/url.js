@@ -39,7 +39,10 @@ let apiUrl = {
     themes: '/theme/all',
     addTheme: 'theme/add',
     updateTheme: 'theme/update',
-    deleteTheme: 'theme/delete'
+    deleteTheme: 'theme/delete',
+    uploadImage: 'image/uploadImg',
+    imageList: 'image/imgList',
+    deleteImage: 'image/delete'
 
 }
 export default apiUrl

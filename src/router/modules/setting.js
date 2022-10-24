@@ -16,6 +16,14 @@ export default {
             meta: {
                 title: '轮播图'
             }
+        },
+        {
+            path: 'image',
+            name: 'image',
+            component: () => import('@/views/setting/image.vue'),
+            meta: {
+                title: '图片'
+            }
         }
     ]
 }
